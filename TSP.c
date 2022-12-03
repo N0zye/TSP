@@ -12,20 +12,19 @@ const char* encrypt(char *text){
 	for(unsigned int i = 0;i < strlen(text); i++){
 		text[i] += 11;	
 		text[i] = text[i] | (char)sqrt(strlen(text) + 2*i);
-		text[i] = text[i] ^ (char)sqrt(strlen(text) + 1/3);
+		text[i] = text[i] ^ (char)sqrt(strlen(text));
 	}
 	return text;
 }
 
-void getText(char *string, int mode) // Mode 1 è la modalità "hide"
+void getText(char *string) // Mode 1 è la modalità "hide"
 {
 	char ch = 0;
 	int i = 0;
-
 	while(ch!=ENTER){	//13 è il "enter" mentre 8 è il "cancella"
 		ch=getch();
 		if(ch!=ENTER && ch!=BACKSPACE){
-			printf("%c", (mode == 1) ? 42 : ch);
+			printf("*");
 			string[i]=ch;
 			i++;
 		}
@@ -37,7 +36,7 @@ void printText(char *string, int SleepDuration)
 {
 	for(unsigned int i = 0;i <= strlen(string); i++){
 		Sleep(SleepDuration);
-		printf("%c",string[i]);
+		(SleepDuration % 2 == 0) ? printf("%c",string[i]) : printf(" %c",string[i]);
 	}
 }
 
@@ -47,18 +46,18 @@ void login()
 
 	char realPass[100], userPass[100], userName[30], fullPath[50];
 
-	printText("\t\t\t\tL O G I N", 70);
+	printText("\t\t\t\tLOGIN", 61);
 	Sleep(400);
 	logstart:
 	printText("\n\nInserire nome utente: ", 60);
 	memset(userName,0,strlen(userName));
 	memset(fullPath,0,strlen(fullPath));
 	strcpy(fullPath, "Accounts/");
-	getText(userName, 0);
+	gets(userName);
 	strcat(userName, ".txt"); // aggiunge il ".txt"
 	strcat(fullPath, userName); // aggiunge il "Accounts/"
-	printText("\nInserire password: ", 60);
-	getText(userPass, 1);
+	printText("Inserire password: ", 60);
+	getText(userPass);
 
 	FILE *user = fopen(fullPath, "r");
 	fgets(realPass, 500, user);
@@ -85,45 +84,37 @@ void login()
 
 int main() 
 {
-	char userName[40], tempPass[40], yesNo[20], fullPath[50] = "Accounts/";
+	char userName[40], userPass[40], yesNo[20], fullPath[50] = "Accounts/";
 	system("color B");
-	printText("\t\t\tT o p  S e c u r i t y  P r o g r a m m", 50);
+	printText("\t\t\t\tTop Security Programm", 61);
 
 	Sleep(500);
-	printf("\n\n\nHai gia un account(y/n)? ");
+	printText("\n\n\nHai gia un account(y/n)? ", 60);
 	gets(yesNo);
 	
-	while (!(strncmp(yesNo, "y", 1) == 0 || strncmp(yesNo, "n", 1) == 0)){
+	while (!(strncmp(yesNo, "y", 1) == 0 || strncmp(yesNo, "yes", 1) == 0 || strncmp(yesNo, "n", 1) == 0 || strncmp(yesNo, "no", 1) == 0)){
 		printf("Il carrattere inserito non e' valido.\nHai gia un account(y/n)? ");
 		gets(yesNo);
 	}
 	if (yesNo[0] == 'y'){
-		//chiedi il nome utente e metti la password pari a quella nel file txt poi fai il controllo password
 		Sleep(250);
 		system("cls");
 		login();
 	}
 	else{
-		char tit[30] = "Creazione nuovo account";
 		system("cls");
-		printf("\t\t");
-		for(unsigned int i = 0;i <= strlen(tit); i++){
-			Sleep(50);
-			printf(" %c",tit[i]);
-		}
+		printText("\t\t\tCreazione nuovo account", 71);
 		Sleep(400);
 		printf("\n\n\nInserire nome utente: ");
-		getText(userName, 0);
+		gets(userName);
 		strcat(userName, ".txt"); // aggiunge il ".txt"
 		strcat(fullPath, userName);
 		Sleep(400);
-
-		printf("\nInserire password: ");
-		getText(tempPass, 1);
-		encrypt(tempPass);
+		printf("Inserire password: ");
+		getText(userPass);
 
 		FILE *passKeep = fopen(fullPath, "w+");
-		fprintf(passKeep, "%s", tempPass);
+		fprintf(passKeep, "%s", encrypt(userPass));
 		fclose(passKeep);
 		login();
 	}	
