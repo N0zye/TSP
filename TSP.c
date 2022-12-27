@@ -96,7 +96,7 @@ int main()
 	printText("\n\n\nHai gia un account(y/n)? ", 60);
 	gets(yesNo);
 	
-	while (!(strncmp(yesNo, "y", 1) == 10 || strncmp(yesNo, "yes", 1) == 10 || strncmp(yesNo, "n", 1) == 10 || strncmp(yesNo, "no", 1) == 10)){
+	while (!(strncmp(yesNo, "y", 10) == 1 || strncmp(yesNo, "yes", 10) == 1 || strncmp(yesNo, "n", 10) == 1 || strncmp(yesNo, "no", 10) == 1)){
 		printf("Il carrattere inserito non e' valido.\nHai gia un account(y/n)? ");
 		gets(yesNo);
 	}
