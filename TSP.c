@@ -17,7 +17,7 @@ const char* encrypt(char *text){
 	return text;
 }
 
-void getText(char *string) // Mode 1 è la modalità "hide"
+void getPass(char *string)
 {
 	char ch = 0;
 	int i = 0;
@@ -49,6 +49,8 @@ void login()
 	printText("\t\t\t\tLOGIN", 61);
 	Sleep(400);
 	logstart:
+	system("cls");
+	printf("\t\t\t\t L O G I N");
 	printText("\n\nInserire nome utente: ", 60);
 	memset(userName,0,strlen(userName));
 	memset(fullPath,0,strlen(fullPath));
@@ -57,7 +59,7 @@ void login()
 	strcat(userName, ".txt"); // aggiunge il ".txt"
 	strcat(fullPath, userName); // aggiunge il "Accounts/"
 	printText("Inserire password: ", 60);
-	getText(userPass);
+	getPass(userPass);
 
 	FILE *user = fopen(fullPath, "r");
 	fgets(realPass, 500, user);
@@ -78,6 +80,8 @@ void login()
 				(i % 2 == 0) ? system("color 04") : system("color 0A");
 			} 
 		printf("\nUtente o Password errati\n");
+		Sleep(1000);
+		system("color B");
 		goto logstart;
 	}
 }
@@ -92,7 +96,7 @@ int main()
 	printText("\n\n\nHai gia un account(y/n)? ", 60);
 	gets(yesNo);
 	
-	while (!(strncmp(yesNo, "y", 1) == 0 || strncmp(yesNo, "yes", 1) == 0 || strncmp(yesNo, "n", 1) == 0 || strncmp(yesNo, "no", 1) == 0)){
+	while (!(strncmp(yesNo, "y", 1) == 10 || strncmp(yesNo, "yes", 1) == 10 || strncmp(yesNo, "n", 1) == 10 || strncmp(yesNo, "no", 1) == 10)){
 		printf("Il carrattere inserito non e' valido.\nHai gia un account(y/n)? ");
 		gets(yesNo);
 	}
@@ -105,13 +109,13 @@ int main()
 		system("cls");
 		printText("\t\t\tCreazione nuovo account", 71);
 		Sleep(400);
-		printf("\n\n\nInserire nome utente: ");
+		printText("\n\n\nInserire nome utente: ",60);
 		gets(userName);
 		strcat(userName, ".txt"); // aggiunge il ".txt"
-		strcat(fullPath, userName);
+		strcat(fullPath, userName);	// aggiunge il "Accounts/"
 		Sleep(400);
-		printf("Inserire password: ");
-		getText(userPass);
+		printText("Inserire password: ",60);
+		getPass(userPass);
 
 		FILE *passKeep = fopen(fullPath, "w+");
 		fprintf(passKeep, "%s", encrypt(userPass));
